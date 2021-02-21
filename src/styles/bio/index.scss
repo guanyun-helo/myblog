@@ -1,8 +1,31 @@
 .bio-container {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center !important;
   align-items: center !important;
+  .soicals {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-evenly;
+    margin-bottom: 10px;
+    .soical-item {
+      padding: 0px 10px 0px 10px;
+      border: 1px solid #000;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+    }
+    .soical-item:hover {
+      padding: 0px 10px 0px 10px;
+      border: 1px solid #000;
+      border-radius: 4px;
+      background-color: #000;
+      transition: all 0.3s ease;
+      a {
+        color: #fff !important;
+      }
+    }
+  }
   p {
     margin: 0 !important;
     padding: 0 !important;

@@ -4,7 +4,7 @@ import { Link, graphql } from "gatsby"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import Button from "../components/button"
-
+import Bio from "../components/bio"
 class IndexPage extends React.Component {
   constructor() {
     super()
@@ -27,6 +27,7 @@ class IndexPage extends React.Component {
           title="Home"
           keywords={[`blog`, `gatsby`, `javascript`, `react`]}
         />
+        {/* <Bio /> */}
         <div className="latest-actions">
           <div className="latest-posts">
             <div className="latest-title">Latest Posts</div>

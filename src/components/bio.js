@@ -12,6 +12,24 @@ import styled from "styled-components"
 
 import { rhythm } from "../utils/typography"
 import "../styles/bio/index.scss"
+const soicalPlatforms = [
+  {
+    title: "Matters",
+    url: "https://matters.news/@guanyun",
+  },
+  {
+    title: "LikeCoin",
+    url: "https://liker.land/guanyun",
+  },
+  {
+    title: "Github",
+    url: "https://github.com/guanyun-helo",
+  },
+  {
+    title: "Gmail",
+    url: "mailto:guanyun.helo@gmail.com",
+  },
+]
 function Bio() {
   return (
     <StaticQuery
@@ -20,6 +38,15 @@ function Bio() {
         const { author, social } = data.site.siteMetadata
         return (
           <Container className="bio-container">
+            <div className="soicals">
+              {soicalPlatforms.map((soical, sdx) => {
+                return (
+                  <div className="soical-item" key={sdx}>
+                    <a href={soical.url}>{soical.title}</a>
+                  </div>
+                )
+              })}
+            </div>
             <Image
               fixed={data.avatar.childImageSharp.fixed}
               alt={author}

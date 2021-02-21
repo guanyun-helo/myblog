@@ -1,12 +1,12 @@
 module.exports = {
   siteMetadata: {
     // edit below
-    title: `Gatsby Starter Personal Blog`,
-    author: `Gatsby`,
-    description: `A starter personal blog with styled components, dark mode, and Netlify CMS.`,
-    siteUrl: `https://gatsby-starter-blog-demo.netlify.com/`,
+    title: `Guanyun's blog`,
+    author: `Guanyun's blog`,
+    description: `Documenting my life on Earth`,
+    siteUrl: `https://guanyun.live`,
     social: {
-      twitter: `gatsbyjs`,
+      twitter: `guanyun`,
     },
   },
   flags: {
@@ -134,14 +134,14 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `Gatsby Starter Blog`,
-        short_name: `GatsbyJS`,
+        name: `Guanyun's blog`,
+        short_name: `Guanyun's blog`,
         start_url: `/`,
         background_color: `#ffffff`,
         theme_color: `#663399`,
         display: `minimal-ui`,
         // edit below
-        icon: `content/assets/gatsby-icon.png`,
+        icon: `content/assets/zendaya.jpg`,
       },
     },
     {
