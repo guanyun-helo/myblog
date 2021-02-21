@@ -1,0 +1,99 @@
+@media (min-width: 768px) {
+  .posts-container {
+    width: 100%;
+    padding: 0 25vw 0 25vw;
+    margin-top: 30px;
+    .post {
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: row;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 20px;
+      .post-content {
+        flex: 6;
+        .post-title {
+          color: rgb(0, 0, 0);
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          font-weight: 700;
+        }
+        .post-desc {
+          font-size: 1rem;
+          line-height: 1.5rem;
+          font-weight: 400;
+        }
+        .post-time {
+          font-size: 0.75rem;
+          color: rgb(85, 85, 85);
+          letter-spacing: 0.5px;
+        }
+      }
+      .post-img {
+        max-width: 240px;
+        margin-left: 10px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        img {
+          border-radius: 4px;
+          width: 100%;
+          margin: 0;
+          padding: 0;
+        }
+      }
+    }
+    .post:hover {
+      cursor: pointer;
+    }
+  }
+}
+@media (max-width: 768px) {
+  .posts-container {
+    width: 100%;
+    padding: 0 5vw 0 5vw;
+    .post {
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 20px;
+      .post-content {
+        flex: 6;
+        .post-title {
+          color: rgb(0, 0, 0);
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          font-weight: 700;
+        }
+        .post-desc {
+          font-size: 1rem;
+          line-height: 1.5rem;
+          font-weight: 400;
+        }
+        .post-time {
+          font-size: 0.75rem;
+          color: rgb(85, 85, 85);
+          letter-spacing: 0.5px;
+        }
+      }
+      .post-img {
+        margin-top: 10px;
+        max-width: 370px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        img {
+          border-radius: 4px;
+          width: 100%;
+          margin: 0;
+          padding: 0;
+        }
+      }
+    }
+    .post:hover {
+      cursor: pointer;
+    }
+  }
+}
