@@ -34,6 +34,9 @@ export function Layout(props) {
             <div className="philosophy item">
               <Link to="/philosophy">Philosophy</Link>
             </div>
+            <div className="thoughts item">
+              <Link to="/thoughts">Thoughts</Link>
+            </div>
           </div>
           <div className="mobile-menus">
             <Button
@@ -62,6 +65,9 @@ export function Layout(props) {
                 <div className="philosophy item">
                   <Link to="/philosophy">Philosophy</Link>
                 </div>
+                            <div className="thoughts item">
+              <Link to="/thoughts">Thoughts</Link>
+            </div>
               </div>
             </Drawer>
           </div>
