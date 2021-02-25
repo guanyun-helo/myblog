@@ -7,23 +7,32 @@ import SEO from "../components/seo"
 import Button from "../components/button"
 // import SearchPosts from "../components/searchPosts"
 import "../styles/thoughts/index.scss"
+import axios from 'axios'
+
 const siteTitle = "This is my blog"
 
 function Post(props) {
     const [nodes, setNodes] = useState([])
 
     const loginWithGithub = () => {
-        
-        const url = new URL('https://serverless-blush-five-88.vercel.app/https://github.com/login/oauth/authorize')
-        const params = { client_id: 'a08706cc30fd0e8f0ca7',scope: 'user' } // or:
-        url.search = new URLSearchParams(params).toString();
 
-        fetch(url,{mode:'cors'}).then((res) => {
-            console.log(res)
-            res.json().then((data)=>{
-                console.log(data)
-            })
+        axios.get('https://guanyun.nl/github.com/login/oauth/authorize', {
+            params: {
+                client_id: 'a08706cc30fd0e8f0ca7', scope: 'user'
+            }
         })
+            .then(function (response) {
+                console.log(response);
+                const url = response.headers['x-final-url']
+                window.location = url
+
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
+            .then(function () {
+                // always executed
+            });
     }
     useEffect(() => {
         let postNodes = []
@@ -37,7 +46,7 @@ function Post(props) {
             <SEO title="Creative thoughts" />
             <div className="thoughts-container">
                 <div>
-                  <a href="https://github.com/login/oauth/authorize?scope=user:email&client_id=a08706cc30fd0e8f0ca7">Click here</a>
+                    <a href="https://github.com/login/oauth/authorize?scope=user:email&client_id=a08706cc30fd0e8f0ca7">Click here</a>
 
 
                 </div>
