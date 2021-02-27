@@ -74,9 +74,10 @@ function Thoughts(props) {
       })
   }
 
-  const sendThoughts = value => {
+  const sendThoughts = async value => {
     const git = new Git(token, value)
-    git.createContent()
+    await git.createContent()
+    edit()
   }
 
   const edit = () => {
