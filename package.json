@@ -12,9 +12,12 @@
     "@material-ui/icons": "^4.11.2",
     "@mdx-js/mdx": "^1.5.1",
     "@mdx-js/react": "^1.5.1",
+    "@octokit/core": "^3.2.5",
+    "@octokit/rest": "^18.3.0",
     "animate.css": "^4.1.1",
     "axios": "^0.21.1",
     "babel-plugin-styled-components": "^1.10.0",
+    "base-64": "^1.0.0",
     "gatsby": "^2.24.47",
     "gatsby-image": "^2.0.39",
     "gatsby-plugin-feed-mdx": "^1.0.0",
@@ -37,7 +40,10 @@
     "gatsby-remark-vscode": "^2.1.2",
     "gatsby-source-filesystem": "^2.0.29",
     "gatsby-transformer-sharp": "^2.1.18",
+    "github-api": "^3.4.0",
+    "nanoid": "^3.1.20",
     "netlify-cms-app": "^2.9.1",
+    "octokat": "^0.10.0",
     "query-string": "^6.13.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -50,7 +56,8 @@
     "typeface-merriweather": "0.0.72",
     "typeface-montserrat": "0.0.54",
     "typography": "^0.16.19",
-    "typography-theme-wordpress-2016": "^0.16.19"
+    "typography-theme-wordpress-2016": "^0.16.19",
+    "utf8": "^3.0.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.2.4",

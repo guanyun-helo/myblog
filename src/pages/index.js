@@ -5,6 +5,7 @@ import Layout from "../components/layout"
 import SEO from "../components/seo"
 import Button from "../components/button"
 import Bio from "../components/bio"
+
 class IndexPage extends React.Component {
   constructor() {
     super()

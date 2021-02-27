@@ -1,20 +1,23 @@
 import React, { useState, useEffect } from "react"
 import { Link, graphql } from "gatsby"
-
+import CreateTwoToneIcon from "@material-ui/icons/CreateTwoTone"
 import Bio from "../components/bio"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import Button from "../components/button"
+import EditArea from "../components/edit"
 // import SearchPosts from "../components/searchPosts"
 import "../styles/thoughts/index.scss"
 import axios from "axios"
-
+import Git from "../utils/git"
 const siteTitle = "This is my blog"
 
 function Post(props) {
   const [nodes, setNodes] = useState([])
   const [code, setCode] = useState("")
-
+  const [token, setToken] = useState("")
+  const [tokenType, setTokenType] = useState("")
+  const [showEditArea, setShowEditArea] = useState(false)
   const loginGithub = code => {
     let windowUrl = ""
     if (window) {
@@ -23,13 +26,19 @@ function Post(props) {
     axios
       .post("http://localhost:3000/api/github-login", {
         client_id: "a08706cc30fd0e8f0ca7",
-        scope: "user",
+        scope: "repo",
         redirect_uri: windowUrl,
         code: code,
         client_secret: "",
       })
       .then(response => {
+        // access_token=927d3f8c754663334ffa62236d0d7c7fa87f26cc&scope=user&token_type=bearer
         console.log(response)
+        const urlParams = new URLSearchParams(response.data.data)
+        if (urlParams.get("access_token").length > 0) {
+          setToken(urlParams.get("access_token"))
+          setTokenType(urlParams.get("token_type"))
+        }
       })
       .catch(function(error) {
         console.log(error)
@@ -46,7 +55,7 @@ function Post(props) {
     axios
       .post("http://localhost:3000/api/github-auth", {
         client_id: "a08706cc30fd0e8f0ca7",
-        scope: "user",
+        scope: "repo",
         redirect_uri: windowUrl,
       })
       .then(response => {
@@ -60,6 +69,19 @@ function Post(props) {
       .then(function() {
         // always executed
       })
+  }
+
+  const commitFile = () => {
+    const git = new Git(token, tokenType)
+    git.createContent()
+  }
+  const sendThoughts = (token, value) => {
+    const git = new Git(token, value)
+    git.createContent()
+  }
+
+  const edit = () => {
+    setShowEditArea(!showEditArea)
   }
   useEffect(() => {
     if (window) {
@@ -82,11 +104,7 @@ function Post(props) {
     <Layout location={props.location} title={siteTitle}>
       <SEO title="Creative thoughts" />
       <div className="thoughts-container">
-        <div>
-          <a href="https://github.com/login/oauth/authorize?scope=user:email&client_id=a08706cc30fd0e8f0ca7">
-            Click here
-          </a>
-        </div>
+        <div className="thoughts-list"></div>
         <div className="login-with-github">
           <div className="github-logo" onClick={authGithub}>
             <svg
@@ -104,6 +122,17 @@ function Post(props) {
             </svg>
           </div>
           <div className="login-with-github-title">login with github</div>
+          {/* <div onClick={commitFile} className="upload">
+            Upload
+          </div> */}
+        </div>
+        <div className="edit-container">
+          <div className="edit-button" onClick={edit}>
+            <CreateTwoToneIcon />
+          </div>
+          {showEditArea ? (
+            <EditArea toggleEditArea={edit} sendThoughts={sendThoughts} />
+          ) : null}
         </div>
       </div>
       <Link to="/">{/* <Button marginTop="85px">Go Home</Button> */}</Link>
