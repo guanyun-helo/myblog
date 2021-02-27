@@ -75,7 +75,8 @@ function Post(props) {
     const git = new Git(token, tokenType)
     git.createContent()
   }
-  const sendThoughts = (token, value) => {
+  const sendThoughts = value => {
+    console.log(token, value)
     const git = new Git(token, value)
     git.createContent()
   }

@@ -1,5 +1,6 @@
 import axios from "axios"
 import base64 from "base-64"
+import utf8 from "utf8"
 import { nanoid } from "nanoid"
 
 class Git {
@@ -21,7 +22,7 @@ class Git {
 
     category: 'thoughts'
 
-    description: ${this.value}.
+    description: ${encodeURI(this.value)}
 
 
     ---
