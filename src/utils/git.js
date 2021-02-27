@@ -26,8 +26,7 @@ description: ${encodeURI(this.value)}
     
 ---
     
-    `
-    console.log("content", content)
+    `.trimStart()
     // axios
     //   .get(
     //     "https://api.github.com/repos/guanyun-helo/myblog",

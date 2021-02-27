@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { Link, graphql } from "gatsby"
+import localforage from "localforage"
 import CreateTwoToneIcon from "@material-ui/icons/CreateTwoTone"
 import Bio from "../components/bio"
 import Layout from "../components/layout"
@@ -12,7 +13,7 @@ import axios from "axios"
 import Git from "../utils/git"
 const siteTitle = "This is my blog"
 
-function Post(props) {
+function Thoughts(props) {
   console.log(props)
   const [nodes, setNodes] = useState([])
   const [code, setCode] = useState("")
@@ -26,7 +27,7 @@ function Post(props) {
       windowUrl = window.location.href
     }
     axios
-      .post("http://localhost:3000/api/github-login", {
+      .post("https://guanyun.nl/api/github-login", {
         client_id: "a08706cc30fd0e8f0ca7",
         scope: "repo",
         redirect_uri: windowUrl,
@@ -34,12 +35,11 @@ function Post(props) {
         client_secret: "",
       })
       .then(response => {
-        // access_token=927d3f8c754663334ffa62236d0d7c7fa87f26cc&scope=user&token_type=bearer
-        console.log(response)
         const urlParams = new URLSearchParams(response.data.data)
         if (urlParams.get("access_token").length > 0) {
           setToken(urlParams.get("access_token"))
           setTokenType(urlParams.get("token_type"))
+          localforage.setItem("token", urlParams.get("access_token"))
         }
       })
       .catch(function(error) {
@@ -55,15 +55,16 @@ function Post(props) {
       windowUrl = window.location.href
     }
     axios
-      .post("http://localhost:3000/api/github-auth", {
+      .post("https://guanyun.nl/api/github-auth", {
         client_id: "a08706cc30fd0e8f0ca7",
         scope: "repo",
         redirect_uri: windowUrl,
       })
       .then(response => {
-        console.log(response)
         const url = response.data.url
-        window.location = response.data.url
+        if (window) {
+          window.location = response.data.url
+        }
       })
       .catch(function(error) {
         console.log(error)
@@ -73,12 +74,7 @@ function Post(props) {
       })
   }
 
-  const commitFile = () => {
-    const git = new Git(token, tokenType)
-    git.createContent()
-  }
   const sendThoughts = value => {
-    console.log(token, value)
     const git = new Git(token, value)
     git.createContent()
   }
@@ -88,27 +84,62 @@ function Post(props) {
   }
   useEffect(() => {
     if (window) {
-      const queryString = window.location.search
-      if (queryString.length === 0) return
-      console.log("queryString", queryString)
-      const urlParams = new URLSearchParams(queryString)
-      if (urlParams.get("code").length > 0) {
-        loginGithub(urlParams.get("code"))
-      }
-      console.log("urlParams", urlParams.get("code"))
+      localforage.getItem("token", (err, value) => {
+        if (err || !value) {
+          const queryString = window.location.search
+          if (queryString.length !== 0) {
+            const urlParams = new URLSearchParams(queryString)
+            if (urlParams.get("code").length > 0) {
+              loginGithub(urlParams.get("code"))
+              localforage.setItem("code", urlParams.get("code"))
+            }
+          } else {
+            authGithub()
+          }
+        }
+        if (value) {
+          setToken(value)
+        }
+      })
     }
     let postNodes = []
     props.data.allMdx.edges.map(item => {
       if (item.node.frontmatter.category === "thoughts") postNodes.push(item)
     })
-    console.log("nodes", nodes)
     setNodes(postNodes)
   }, [props.data.allMdx.edges, window.location.search])
   return (
     <Layout location={props.location} title={siteTitle}>
       <SEO title="Creative thoughts" />
       <div className="thoughts-container">
-        <div className="thoughts-list"></div>
+        <div className="thoughts-list">
+          {nodes.map((node, ndx) => {
+            const post = node.node
+            return (
+              <Link key={ndx} to={`/post` + post.fields.slug}>
+                <div key={ndx} className="post">
+                  <div className="post-content">
+                    {/* <div className="post-title">{post.frontmatter.title}</div> */}
+                    <div className="post-desc">
+                      {post.frontmatter.description}
+                    </div>
+                    <div className="post-time">{post.frontmatter.date}</div>
+                  </div>
+                  {post.frontmatter.featuredImage ? (
+                    <div className="post-img">
+                      <img
+                        src={
+                          post.frontmatter.featuredImage.childImageSharp.fluid
+                            .src
+                        }
+                      />
+                    </div>
+                  ) : null}
+                </div>
+              </Link>
+            )
+          })}
+        </div>
         <div className="login-with-github">
           <div className="github-logo" onClick={authGithub}>
             <svg
@@ -144,7 +175,7 @@ function Post(props) {
   )
 }
 
-export default Post
+export default Thoughts
 
 export const pageQuery = graphql`
   query {
