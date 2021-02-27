@@ -12,20 +12,21 @@ class Git {
   createContent() {
     const nid = nanoid()
     const content = `
-    ---
+---
 
-    path: ${nid}
-
-    date: ${new Date().toISOString()}
-
-    title: ${nid}
-
-    category: 'thoughts'
-
-    description: ${encodeURI(this.value)}
-
-
-    ---
+path: ${nid}.mdx
+    
+date: ${new Date().toISOString()}
+    
+title: thoughts:${nid}
+    
+category: 'thoughts'
+    
+description: ${encodeURI(this.value)}
+    
+    
+---
+    
     `
     console.log("content", content)
     // axios

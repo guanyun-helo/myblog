@@ -13,11 +13,13 @@ import Git from "../utils/git"
 const siteTitle = "This is my blog"
 
 function Post(props) {
+  console.log(props)
   const [nodes, setNodes] = useState([])
   const [code, setCode] = useState("")
   const [token, setToken] = useState("")
   const [tokenType, setTokenType] = useState("")
   const [showEditArea, setShowEditArea] = useState(false)
+
   const loginGithub = code => {
     let windowUrl = ""
     if (window) {
@@ -99,6 +101,7 @@ function Post(props) {
     props.data.allMdx.edges.map(item => {
       if (item.node.frontmatter.category === "thoughts") postNodes.push(item)
     })
+    console.log("nodes", nodes)
     setNodes(postNodes)
   }, [props.data.allMdx.edges, window.location.search])
   return (
