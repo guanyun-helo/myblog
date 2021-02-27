@@ -11,8 +11,7 @@ class Git {
 
   createContent() {
     const nid = nanoid()
-    const content = `
----
+    const content = `---
 
 path: ${nid}.mdx
     
