@@ -107,7 +107,7 @@ function Thoughts(props) {
       if (item.node.frontmatter.category === "thoughts") postNodes.push(item)
     })
     setNodes(postNodes)
-  }, [props.data.allMdx.edges, window.location.search])
+  }, [props.data.allMdx.edges])
   return (
     <Layout location={props.location} title={siteTitle}>
       <SEO title="Creative thoughts" />
