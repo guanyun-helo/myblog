@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from "react"
+import { useSnackbar } from "notistack"
+import base64 from "base-64"
+import marked from "marked"
 import { Link, graphql } from "gatsby"
 import localforage from "localforage"
 import CreateTwoToneIcon from "@material-ui/icons/CreateTwoTone"
@@ -13,6 +16,8 @@ import axios from "axios"
 import Git from "../utils/git"
 const siteTitle = "This is my blog"
 
+const git = new Git()
+
 function Thoughts(props) {
   console.log(props)
   const [nodes, setNodes] = useState([])
@@ -20,64 +25,32 @@ function Thoughts(props) {
   const [token, setToken] = useState("")
   const [tokenType, setTokenType] = useState("")
   const [showEditArea, setShowEditArea] = useState(false)
+  // const { enqueueSnackbar, closeSnackbar } = useSnackbar()
 
   const loginGithub = code => {
-    let windowUrl = ""
-    if (window) {
-      windowUrl = window.location.href
-    }
-    axios
-      .post("https://guanyun.nl/api/github-login", {
-        client_id: "a08706cc30fd0e8f0ca7",
-        scope: "repo",
-        redirect_uri: windowUrl,
-        code: code,
-        client_secret: "",
-      })
-      .then(response => {
-        const urlParams = new URLSearchParams(response.data.data)
-        if (urlParams.get("access_token").length > 0) {
-          setToken(urlParams.get("access_token"))
-          setTokenType(urlParams.get("token_type"))
-          localforage.setItem("token", urlParams.get("access_token"))
-        }
-      })
-      .catch(function(error) {
-        console.log(error)
-      })
-      .then(function() {
-        // always executed
-      })
+    git.loginGithub().then(response => {
+      const urlParams = new URLSearchParams(response.data.data)
+      if (urlParams.get("access_token").length > 0) {
+        setToken(urlParams.get("access_token"))
+        setTokenType(urlParams.get("token_type"))
+        localforage.setItem("token", urlParams.get("access_token"))
+      }
+    })
   }
   const authGithub = () => {
-    let windowUrl = ""
-    if (window) {
-      windowUrl = window.location.href
-    }
-    axios
-      .post("https://guanyun.nl/api/github-auth", {
-        client_id: "a08706cc30fd0e8f0ca7",
-        scope: "repo",
-        redirect_uri: windowUrl,
-      })
-      .then(response => {
-        const url = response.data.url
-        if (window) {
-          window.location = response.data.url
-        }
-      })
-      .catch(function(error) {
-        console.log(error)
-      })
-      .then(function() {
-        // always executed
-      })
+    git.authGithub().then(response => {
+      const url = response.data.url
+      if (window) {
+        window.location = response.data.url
+      }
+    })
   }
 
-  const sendThoughts = async value => {
-    const git = new Git(token, value)
-    await git.createContent()
-    edit()
+  const sendThoughts = value => {
+    git.setPostValue(value)
+    git.createContent().then(res => {
+      edit()
+    })
   }
 
   const edit = () => {
@@ -100,14 +73,43 @@ function Thoughts(props) {
         }
         if (value) {
           setToken(value)
+          console.log("value", value)
+          git.setToken(value)
+          git
+            .getPost()
+            .then(response => {
+              if (!response.data || response.data.length === 0) return
+              let nodes = []
+              response.data.forEach(post => {
+                axios.get(post.download_url).then(postRes => {
+                  console.log(postRes.data)
+                  // postRes.data = base64.decode(postRes.data)
+                  if (marked.lexer(postRes.data)[14]) {
+                    const node = {
+                      description: marked.lexer(postRes.data)[4].text,
+                      date: marked.lexer(postRes.data)[10].text,
+                      content: marked.lexer(postRes.data)[14].text,
+                      path: marked.lexer(postRes.data)[1].text,
+                    }
+                    nodes.push(node)
+                    setNodes(nodes)
+                  }
+                })
+              })
+              console.log("posts", response)
+            })
+            .catch(err => {
+              // enqueueSnackbar("get post failed!")
+            })
+          let postNodes = []
+          props.data.allMdx.edges.map(item => {
+            if (item.node.frontmatter.category === "thoughts")
+              postNodes.push(item)
+          })
+          setNodes(postNodes)
         }
       })
     }
-    let postNodes = []
-    props.data.allMdx.edges.map(item => {
-      if (item.node.frontmatter.category === "thoughts") postNodes.push(item)
-    })
-    setNodes(postNodes)
   }, [props.data.allMdx.edges])
   return (
     <Layout location={props.location} title={siteTitle}>
@@ -115,18 +117,17 @@ function Thoughts(props) {
       <div className="thoughts-container">
         <div className="thoughts-list">
           {nodes.map((node, ndx) => {
-            const post = node.node
+            console.log(node)
+            const post = node
             return (
-              <Link key={ndx} to={`/post` + post.fields.slug}>
+              <Link key={ndx} to={`/post` + post.path}>
                 <div key={ndx} className="post">
                   <div className="post-content">
                     {/* <div className="post-title">{post.frontmatter.title}</div> */}
-                    <div className="post-desc">
-                      {post.frontmatter.description}
-                    </div>
-                    <div className="post-time">{post.frontmatter.date}</div>
+                    <div className="post-desc">{post.content}</div>
+                    <div className="post-time">{post.date}</div>
                   </div>
-                  {post.frontmatter.featuredImage ? (
+                  {/* {post.frontmatter.featuredImage ? (
                     <div className="post-img">
                       <img
                         src={
@@ -135,7 +136,7 @@ function Thoughts(props) {
                         }
                       />
                     </div>
-                  ) : null}
+                  ) : null} */}
                 </div>
               </Link>
             )
