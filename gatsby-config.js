@@ -87,13 +87,13 @@ module.exports = {
         name: `project`,
       },
     },
-    {
-      resolve: `gatsby-source-filesystem`,
-      options: {
-        path: `${__dirname}/content/thoughts`,
-        name: `thoughts`,
-      },
-    },
+    // {
+    //   resolve: `gatsby-source-filesystem`,
+    //   options: {
+    //     path: `${__dirname}/content/thoughts`,
+    //     name: `thoughts`,
+    //   },
+    // },
     {
       resolve: `gatsby-source-filesystem`,
       options: {

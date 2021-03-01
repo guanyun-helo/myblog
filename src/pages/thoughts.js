@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { useSnackbar } from "notistack"
+// import { useSnackbar } from "notistack"
 import { Link, graphql } from "gatsby"
 import Fade from "@material-ui/core/Fade"
 import localforage from "localforage"
@@ -23,7 +23,7 @@ function Thoughts(props) {
   const [token, setToken] = useState("")
   const [tokenType, setTokenType] = useState("")
   const [showEditArea, setShowEditArea] = useState(false)
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar()
+  // const { enqueueSnackbar, closeSnackbar } = useSnackbar()
   const loginGithub = code => {
     git.loginGithub().then(response => {
       const urlParams = new URLSearchParams(response.data.data)
@@ -47,14 +47,14 @@ function Thoughts(props) {
     git.setPostValue(value)
     git.createContent().then(res => {
       edit()
-      enqueueSnackbar("published", {
-        variant: "info",
-        anchorOrigin: {
-          vertical: "bottom",
-          horizontal: "left",
-        },
-        TransitionComponent: Fade,
-      })
+      // enqueueSnackbar("published", {
+      //   variant: "info",
+      //   anchorOrigin: {
+      //     vertical: "bottom",
+      //     horizontal: "left",
+      //   },
+      //   TransitionComponent: Fade,
+      // })
       getPosts()
     })
   }
@@ -87,7 +87,7 @@ function Thoughts(props) {
         })
       })
       .catch(err => {
-        enqueueSnackbar("get post failed!")
+        // enqueueSnackbar("get post failed!")
       })
   }
 
