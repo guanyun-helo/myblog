@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { useSnackbar } from "notistack"
-import base64 from "base-64"
-import marked from "marked"
 import { Link, graphql } from "gatsby"
+import Fade from "@material-ui/core/Fade"
 import localforage from "localforage"
 import CreateTwoToneIcon from "@material-ui/icons/CreateTwoTone"
 import Bio from "../components/bio"
@@ -19,14 +18,12 @@ const siteTitle = "This is my blog"
 const git = new Git()
 
 function Thoughts(props) {
-  console.log(props)
   const [nodes, setNodes] = useState([])
   const [code, setCode] = useState("")
   const [token, setToken] = useState("")
   const [tokenType, setTokenType] = useState("")
   const [showEditArea, setShowEditArea] = useState(false)
-  // const { enqueueSnackbar, closeSnackbar } = useSnackbar()
-
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar()
   const loginGithub = code => {
     git.loginGithub().then(response => {
       const urlParams = new URLSearchParams(response.data.data)
@@ -50,7 +47,48 @@ function Thoughts(props) {
     git.setPostValue(value)
     git.createContent().then(res => {
       edit()
+      enqueueSnackbar("published", {
+        variant: "info",
+        anchorOrigin: {
+          vertical: "bottom",
+          horizontal: "left",
+        },
+        TransitionComponent: Fade,
+      })
+      getPosts()
     })
+  }
+
+  const getPosts = () => {
+    git
+      .getPost()
+      .then(response => {
+        if (!response.data || response.data.length === 0) return
+        let postNodes = []
+
+        let raws = response.data.map(post => {
+          if (nodes.find(item => item.path === post.path)) return
+          return post.download_url
+        })
+        Promise.all(raws.map(u => axios.get(u))).then(responses => {
+          console.log("responses", responses)
+          responses.forEach(post => {
+            const node = {
+              path: post.data.path,
+              date: post.data.date,
+              title: post.data.title,
+              category: post.data.category,
+              content: post.data.content,
+            }
+            postNodes.push(node)
+            setNodes(postNodes.slice(0, postNodes.length).reverse())
+            console.log(nodes)
+          })
+        })
+      })
+      .catch(err => {
+        enqueueSnackbar("get post failed!")
+      })
   }
 
   const edit = () => {
@@ -73,40 +111,8 @@ function Thoughts(props) {
         }
         if (value) {
           setToken(value)
-          console.log("value", value)
           git.setToken(value)
-          git
-            .getPost()
-            .then(response => {
-              if (!response.data || response.data.length === 0) return
-              let nodes = []
-              response.data.forEach(post => {
-                axios.get(post.download_url).then(postRes => {
-                  console.log(postRes.data)
-                  // postRes.data = base64.decode(postRes.data)
-                  if (marked.lexer(postRes.data)[14]) {
-                    const node = {
-                      description: marked.lexer(postRes.data)[4].text,
-                      date: marked.lexer(postRes.data)[10].text,
-                      content: marked.lexer(postRes.data)[14].text,
-                      path: marked.lexer(postRes.data)[1].text,
-                    }
-                    nodes.push(node)
-                    setNodes(nodes)
-                  }
-                })
-              })
-              console.log("posts", response)
-            })
-            .catch(err => {
-              // enqueueSnackbar("get post failed!")
-            })
-          let postNodes = []
-          props.data.allMdx.edges.map(item => {
-            if (item.node.frontmatter.category === "thoughts")
-              postNodes.push(item)
-          })
-          setNodes(postNodes)
+          getPosts()
         }
       })
     }
@@ -117,7 +123,6 @@ function Thoughts(props) {
       <div className="thoughts-container">
         <div className="thoughts-list">
           {nodes.map((node, ndx) => {
-            console.log(node)
             const post = node
             return (
               <Link key={ndx} to={`/post` + post.path}>
@@ -125,7 +130,9 @@ function Thoughts(props) {
                   <div className="post-content">
                     {/* <div className="post-title">{post.frontmatter.title}</div> */}
                     <div className="post-desc">{post.content}</div>
-                    <div className="post-time">{post.date}</div>
+                    <div className="post-time">
+                      {new Date(post.date).toLocaleString()}
+                    </div>
                   </div>
                   {/* {post.frontmatter.featuredImage ? (
                     <div className="post-img">

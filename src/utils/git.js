@@ -1,5 +1,5 @@
 import axios from "axios"
-import base64 from "base-64"
+import base64 from "hi-base64"
 import utf8 from "utf8"
 import { nanoid } from "nanoid"
 
@@ -79,34 +79,21 @@ class Git {
   createContent() {
     return new Promise((resolve, reject) => {
       const nid = nanoid()
-      const content = `---
-  
-path: ${nid}.mdx
-      
-date: ${new Date().toISOString()}
-      
-title: thoughts:${nid}
-      
-category: 'thoughts'
-      
-description: ${encodeURI(this.value).slice(0, 10)}...
-      
-      
----
-  
-  
-   
+      const content = {
+        path: `${nid}.md`,
+        date: `${new Date().toISOString()}`,
+        title: `${this.value.slice(0, 10)}`,
+        category: "thoughts",
+        content: `${this.value}`,
+      }
 
-> ${encodeURI(this.value)}
-      `.trimStart()
       this.axios
         .put(
-          `/repos/guanyun-helo/myblog/contents/content/thoughts/${nanoid()}.mdx`,
+          `/repos/guanyun-helo/myblog/contents/content/thoughts/${nanoid()}.json`,
           {
-            message: `create ${nanoid()}.mdx`,
-            content: base64.encode(content),
-            path: `${nanoid()}.mdx`,
-            //   path: "a.md",
+            message: `create ${nanoid()}.json`,
+            content: base64.encode(JSON.stringify(content, 4)),
+            path: `${nanoid()}.json`,
           }
         )
         .then(res => {
@@ -119,11 +106,10 @@ description: ${encodeURI(this.value).slice(0, 10)}...
   }
 
   getPost() {
-    return this.axios
-      .get("/repos/guanyun-helo/myblog/contents/content/thoughts", {})
-      .then(res => {
-        console.log("myblog", res)
-      })
+    return this.axios.get(
+      "/repos/guanyun-helo/myblog/contents/content/thoughts",
+      {}
+    )
   }
 }
 export default Git

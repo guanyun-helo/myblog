@@ -5,6 +5,7 @@ import "../styles/layout/index.scss"
 import { Drawer, Button } from "@material-ui/core"
 import LikeCoinButton from "../utils/like.button.sdk"
 import MenuIcon from "@material-ui/icons/Menu"
+
 export function Layout(props) {
   const { children } = props
   const [drawerStatus, setDrawerStatus] = useState(false)
@@ -65,9 +66,9 @@ export function Layout(props) {
                 <div className="philosophy item">
                   <Link to="/philosophy">Philosophy</Link>
                 </div>
-                            <div className="thoughts item">
-              <Link to="/thoughts">Thoughts</Link>
-            </div>
+                <div className="thoughts item">
+                  <Link to="/thoughts">Thoughts</Link>
+                </div>
               </div>
             </Drawer>
           </div>
