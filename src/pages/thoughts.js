@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { useSnackbar } from "notistack"
 import { Link, graphql } from "gatsby"
-import { sortBy } from 'lodash'
+import { sortBy } from "lodash"
 import Fade from "@material-ui/core/Fade"
 import localforage from "localforage"
 import CreateTwoToneIcon from "@material-ui/icons/CreateTwoTone"
@@ -24,15 +24,11 @@ function Thoughts(props) {
   const [token, setToken] = useState("")
   const [tokenType, setTokenType] = useState("")
   const [showEditArea, setShowEditArea] = useState(false)
-  if(useSnackbar()){
-    const { enqueueSnackbar, closeSnackbar } = useSnackbar()
-  }else{
-    const enqueueSnackbar = ()=>{
 
-      }
-  }
+  if (!useSnackbar()) return null
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar()
   const loginGithub = code => {
-    git.loginGithub().then(response => {
+    git.loginGithub(code).then(response => {
       const urlParams = new URLSearchParams(response.data.data)
       if (urlParams.get("access_token").length > 0) {
         setToken(urlParams.get("access_token"))
@@ -88,10 +84,13 @@ function Thoughts(props) {
             }
 
             postNodes.push(node)
-            postNodes = sortBy(postNodes, [function(o) { return new Date(o.date).getTime(); }]);
+            postNodes = sortBy(postNodes, [
+              function(o) {
+                return new Date(o.date).getTime()
+              },
+            ])
 
             setNodes(postNodes.slice(0, postNodes.length).reverse())
-            console.log(nodes)
           })
         })
       })

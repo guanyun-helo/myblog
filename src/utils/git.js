@@ -18,7 +18,7 @@ class Git {
   }
 
   setPostValue(value) {
-    this.value = value
+    this.value = JSON.stringify(value)
   }
 
   setToken(token) {
@@ -53,7 +53,7 @@ class Git {
         })
     })
   }
-  loginGithub() {
+  loginGithub(code) {
     return new Promise((resolve, reject) => {
       let windowUrl = ""
       if (window) {

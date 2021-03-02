@@ -3,12 +3,25 @@ import { Link, graphql } from "gatsby"
 import KeyboardBackspaceTwoToneIcon from "@material-ui/icons/KeyboardBackspaceTwoTone"
 import "../styles/conponents/edit/index.scss"
 import Image from "../../content/assets/zendaya.jpg"
+import { useQuill } from "react-quilljs"
+import "quill/dist/quill.snow.css" // Add css for snow theme
 
 function editArea(props) {
-  const [thoughts, setThoughts] = useState("")
+  const [thoughts, setThoughts] = useState({})
+  const { quill, quillRef } = useQuill()
+
   const onTextChange = e => {
     setThoughts(e.target.value)
   }
+  React.useEffect(() => {
+    if (quill) {
+      quill.on("text-change", value => {
+        quill.getContents()
+        setThoughts(quill.getContents())
+      })
+    }
+  }, [quill])
+
   return (
     <div className="edit-area animate__animated animate__fadeInUp animate__faster">
       <div className="return-bar">
@@ -29,7 +42,10 @@ function editArea(props) {
           <img src={Image} />
         </div>
         <div className="input-container">
-          <textarea onChange={onTextChange} id="text-area"></textarea>
+          <div style={{ width: "100%", height: 300 }}>
+            <div ref={quillRef} />
+          </div>
+          {/* <textarea onChange={onTextChange} id="text-area"></textarea> */}
         </div>
       </div>
     </div>
