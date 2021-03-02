@@ -106,8 +106,8 @@ class Git {
   }
 
   getPost() {
-    return this.axios.get(
-      "/repos/guanyun-helo/myblog/contents/content/thoughts",
+    return axios.get(
+      "https://api.github.com/repos/guanyun-helo/myblog/contents/content/thoughts",
       {}
     )
   }

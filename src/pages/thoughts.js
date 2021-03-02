@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
-// import { useSnackbar } from "notistack"
+import { useSnackbar } from "notistack"
 import { Link, graphql } from "gatsby"
+import { sortBy } from 'lodash'
 import Fade from "@material-ui/core/Fade"
 import localforage from "localforage"
 import CreateTwoToneIcon from "@material-ui/icons/CreateTwoTone"
@@ -23,7 +24,13 @@ function Thoughts(props) {
   const [token, setToken] = useState("")
   const [tokenType, setTokenType] = useState("")
   const [showEditArea, setShowEditArea] = useState(false)
-  // const { enqueueSnackbar, closeSnackbar } = useSnackbar()
+  if(useSnackbar()){
+    const { enqueueSnackbar, closeSnackbar } = useSnackbar()
+  }else{
+    const enqueueSnackbar = ()=>{
+
+      }
+  }
   const loginGithub = code => {
     git.loginGithub().then(response => {
       const urlParams = new URLSearchParams(response.data.data)
@@ -47,14 +54,14 @@ function Thoughts(props) {
     git.setPostValue(value)
     git.createContent().then(res => {
       edit()
-      // enqueueSnackbar("published", {
-      //   variant: "info",
-      //   anchorOrigin: {
-      //     vertical: "bottom",
-      //     horizontal: "left",
-      //   },
-      //   TransitionComponent: Fade,
-      // })
+      enqueueSnackbar("published", {
+        variant: "info",
+        anchorOrigin: {
+          vertical: "bottom",
+          horizontal: "left",
+        },
+        TransitionComponent: Fade,
+      })
       getPosts()
     })
   }
@@ -71,7 +78,6 @@ function Thoughts(props) {
           return post.download_url
         })
         Promise.all(raws.map(u => axios.get(u))).then(responses => {
-          console.log("responses", responses)
           responses.forEach(post => {
             const node = {
               path: post.data.path,
@@ -80,14 +86,17 @@ function Thoughts(props) {
               category: post.data.category,
               content: post.data.content,
             }
+
             postNodes.push(node)
+            postNodes = sortBy(postNodes, [function(o) { return new Date(o.date).getTime(); }]);
+
             setNodes(postNodes.slice(0, postNodes.length).reverse())
             console.log(nodes)
           })
         })
       })
       .catch(err => {
-        // enqueueSnackbar("get post failed!")
+        enqueueSnackbar("get post failed!")
       })
   }
 
@@ -106,15 +115,15 @@ function Thoughts(props) {
               localforage.setItem("code", urlParams.get("code"))
             }
           } else {
-            authGithub()
+            // authGithub()
           }
         }
         if (value) {
           setToken(value)
           git.setToken(value)
-          getPosts()
         }
       })
+      getPosts()
     }
   }, [props.data.allMdx.edges])
   return (
