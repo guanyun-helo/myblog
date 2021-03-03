@@ -83,7 +83,7 @@ function Thoughts(props) {
               date: post.data.date,
               title: post.data.title,
               category: post.data.category,
-              content: post.data.content.replace('\\',''),
+              content: post.data.content.replace('\n','\\n'),
             }
 
             try {
