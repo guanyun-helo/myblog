@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react"
 import { useSnackbar } from "notistack"
 import { Link, graphql } from "gatsby"
+
+import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html';
+
 import { sortBy } from "lodash"
 import Fade from "@material-ui/core/Fade"
 import localforage from "localforage"
@@ -80,9 +83,16 @@ function Thoughts(props) {
               date: post.data.date,
               title: post.data.title,
               category: post.data.category,
-              content: post.data.content,
+              content: post.data.content.replace('\\',''),
             }
 
+            try {
+                console.log('node.content', JSON.parse(node.content))
+                const contvert = new QuillDeltaToHtmlConverter(JSON.parse(node.content).ops)
+                node.content = contvert.convert()
+                console.log('node.content', node.content)
+            } catch (error) {
+            }
             postNodes.push(node)
             postNodes = sortBy(postNodes, [
               function(o) {
@@ -137,7 +147,10 @@ function Thoughts(props) {
                 <div key={ndx} className="post">
                   <div className="post-content">
                     {/* <div className="post-title">{post.frontmatter.title}</div> */}
-                    <div className="post-desc">{post.content}</div>
+                    <div className="post-desc">
+                        <div dangerouslySetInnerHTML={{__html: post.content || ''}}></div>
+                        
+                    </div>
                     <div className="post-time">
                       {new Date(post.date).toLocaleString()}
                     </div>
