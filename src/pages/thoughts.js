@@ -19,7 +19,20 @@ import "../styles/thoughts/index.scss"
 import axios from "axios"
 import Git from "../utils/git"
 import { format, subDays } from "date-fns"
-
+const soicalPlatforms = [
+  {
+    title: "Matters",
+    url: "https://matters.news/@guanyun",
+  },
+  {
+    title: "LikeCoin",
+    url: "https://liker.land/guanyun",
+  },
+  {
+    title: "Gmail",
+    url: "mailto:guanyun.helo@gmail.com",
+  },
+]
 const siteTitle = "This is my blog"
 
 const git = new Git()
@@ -75,20 +88,18 @@ function Thoughts(props) {
   }
 
   const getPosts = date => {
-    setLoading(true)
     git
       .getPost()
       .then(response => {
         if (!response.data || response.data.length === 0) return
         let postNodes = []
-        console.log("postNodes", postNodes)
         let raws = response.data.map(post => {
           if (nodes.find(item => item.path === post.path)) return
           return post.download_url
         })
         Promise.all(raws.map(u => axios.get(u))).then(responses => {
-          setLoading(false)
           responses.forEach(post => {
+            console.log("post", post)
             const node = {
               path: post.data.path,
               date: post.data.date,
@@ -109,14 +120,8 @@ function Thoughts(props) {
                 return new Date(o.date).getTime()
               },
             ])
-            console.log(
-              "[postNodes.slice(0, postNodes.length).reverse(), ...nodes]",
-              [postNodes.slice(0, postNodes.length).reverse(), ...nodes]
-            )
-            setNodes([
-              ...postNodes.slice(0, postNodes.length).reverse(),
-              ...nodes,
-            ])
+            console.log(postNodes.slice(0, postNodes.length).reverse())
+            setNodes(postNodes.slice(0, postNodes.length).reverse())
           })
         })
       })
@@ -166,7 +171,7 @@ function Thoughts(props) {
           {nodes.map((node, ndx) => {
             const post = node
             return (
-              <Link key={ndx} to={`/post` + post.path}>
+              <Link key={ndx} to={"/thoughts"}>
                 {loading ? (
                   <Skeleton animation="wave"></Skeleton>
                 ) : (
@@ -190,11 +195,16 @@ function Thoughts(props) {
             )
           })}
         </div>
-        <div className="loadmore" onClick={loadMore}>
-          LoadMore
-        </div>
+
         <div className="login-with-github">
-          <div className="github-logo" onClick={authGithub}>
+          {soicalPlatforms.map((soical, sdx) => {
+            return (
+              <div className="soical-item" key={sdx}>
+                <a href={soical.url}>{soical.title}</a>
+              </div>
+            )
+          })}
+          <div className="github-logo soical-item" onClick={authGithub}>
             <svg
               className="octicon octicon-mark-github v-align-middle"
               height="32"
@@ -209,10 +219,6 @@ function Thoughts(props) {
               ></path>
             </svg>
           </div>
-          <div className="login-with-github-title">login with github</div>
-          {/* <div onClick={commitFile} className="upload">
-            Upload
-          </div> */}
         </div>
         <div className="edit-container">
           <div className="edit-button" onClick={edit}>
