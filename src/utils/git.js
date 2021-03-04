@@ -90,10 +90,8 @@ class Git {
 
       this.axios
         .put(
-          `/repos/guanyun-helo/myblog/contents/content/thoughts/${format(
-            new Date(),
-            "yyyy-MM-dd"
-          )}/${nanoid()}.json`,
+          `/repos/guanyun-helo/myblog/contents/content/thoughts/${nanoid()}.json`,
+
           {
             message: `create ${nanoid()}.json`,
             content: base64.encode(JSON.stringify(content, 4)),
