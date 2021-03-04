@@ -4,11 +4,48 @@ import KeyboardBackspaceTwoToneIcon from "@material-ui/icons/KeyboardBackspaceTw
 import "../styles/conponents/edit/index.scss"
 import Image from "../../content/assets/zendaya.jpg"
 import { useQuill } from "react-quilljs"
-import "quill/dist/quill.snow.css" // Add css for snow theme
+import "quill/dist/quill.bubble.css" // Add css for snow theme
 
 function editArea(props) {
+  const theme = "bubble"
+  // const theme = 'bubble';
+
+  const modules = {
+    toolbar: [
+      [{ header: "1" }, { header: "2" }, { font: [] }],
+      [{ size: [] }],
+      ["bold", "italic", "underline", "strike", "blockquote"],
+      [
+        { list: "ordered" },
+        { list: "bullet" },
+        { indent: "-1" },
+        { indent: "+1" },
+      ],
+      ["link", "image", "video"],
+      ["clean"],
+    ],
+  }
+
+  const placeholder = "There must be something else..."
+
+  const formats = [
+    "header",
+    "font",
+    "size",
+    "bold",
+    "italic",
+    "underline",
+    "strike",
+    "blockquote",
+    "list",
+    "bullet",
+    "indent",
+    "link",
+    "image",
+    "video",
+  ]
   const [thoughts, setThoughts] = useState({})
-  const { quill, quillRef } = useQuill()
+  const { quill, quillRef } = useQuill({ theme, modules, formats, placeholder })
 
   const onTextChange = e => {
     setThoughts(e.target.value)
