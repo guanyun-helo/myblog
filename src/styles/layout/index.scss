@@ -1,4 +1,8 @@
 @media (max-width: 768px) {
+  .wrapper-container {
+    position: relative;
+    z-index: 2;
+  }
   .drawer {
     .drawer-container {
       width: 45vw;
@@ -45,6 +49,8 @@
 @media (min-width: 768px) {
   .wrapper-container {
     width: 100%;
+    position: relative;
+    z-index: 2;
   }
   .header {
     display: flex;

@@ -17,6 +17,8 @@ import EditArea from "../components/edit"
 import "../styles/thoughts/index.scss"
 import axios from "axios"
 import Git from "../utils/git"
+import { format,subDays } from 'date-fns'
+
 const siteTitle = "This is my blog"
 
 const git = new Git()
@@ -27,7 +29,7 @@ function Thoughts(props) {
   const [token, setToken] = useState("")
   const [tokenType, setTokenType] = useState("")
   const [showEditArea, setShowEditArea] = useState(false)
-
+  const [loadCounter, setLoadCounter] = useState(1)
   if (!useSnackbar()) return null
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
   const loginGithub = code => {
@@ -61,13 +63,20 @@ function Thoughts(props) {
         },
         TransitionComponent: Fade,
       })
-      getPosts()
+      getPosts(format(new Date(),'yyyy-MM-dd'))
     })
   }
+  const loadMore = ()=>{
+      setLoadCounter(loadCounter+1)
+      console.log(loadCounter)
+      let date = format(subDays(new Date(),loadCounter),'yyyy-MM-dd')
+      console.log(date)
+      getPosts(date)
+  }
 
-  const getPosts = () => {
+  const getPosts = (date) => {
     git
-      .getPost()
+      .getPost(date)
       .then(response => {
         if (!response.data || response.data.length === 0) return
         let postNodes = []
@@ -87,10 +96,8 @@ function Thoughts(props) {
             }
 
             try {
-                console.log('node.content', JSON.parse(node.content))
                 const contvert = new QuillDeltaToHtmlConverter(JSON.parse(node.content).ops)
                 node.content = contvert.convert()
-                console.log('node.content', node.content)
             } catch (error) {
             }
             postNodes.push(node)
@@ -132,7 +139,7 @@ function Thoughts(props) {
           git.setToken(value)
         }
       })
-      getPosts()
+      getPosts(format(new Date(),'yyyy-MM-dd'))
     }
   }, [props.data.allMdx.edges])
   return (
@@ -170,6 +177,7 @@ function Thoughts(props) {
             )
           })}
         </div>
+        <div className="loadmore" onClick={loadMore}>LoadMore</div>
         <div className="login-with-github">
           <div className="github-logo" onClick={authGithub}>
             <svg

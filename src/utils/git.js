@@ -2,6 +2,8 @@ import axios from "axios"
 import base64 from "hi-base64"
 import utf8 from "utf8"
 import { nanoid } from "nanoid"
+import { format } from 'date-fns'
+
 
 class Git {
   constructor(token, value) {
@@ -89,7 +91,7 @@ class Git {
 
       this.axios
         .put(
-          `/repos/guanyun-helo/myblog/contents/content/thoughts/${nanoid()}.json`,
+          `/repos/guanyun-helo/myblog/contents/content/thoughts/${format(new Date(),'yyyy-MM-dd')}/${nanoid()}.json`,
           {
             message: `create ${nanoid()}.json`,
             content: base64.encode(JSON.stringify(content, 4)),
@@ -105,9 +107,9 @@ class Git {
     })
   }
 
-  getPost() {
+  getPost(date) {
     return axios.get(
-      "https://api.github.com/repos/guanyun-helo/myblog/contents/content/thoughts",
+      `https://api.github.com/repos/guanyun-helo/myblog/contents/content/thoughts/${date}/`,
       {}
     )
   }
