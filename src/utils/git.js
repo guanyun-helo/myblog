@@ -77,13 +77,13 @@ class Git {
     })
   }
 
-  createContent() {
+  createContent(value,text) {
     return new Promise((resolve, reject) => {
       const nid = nanoid()
       const content = {
         path: `${nid}.md`,
         date: `${new Date().toISOString()}`,
-        title: `${this.value.slice(0, 10)}`,
+        title: `${text || 'guanyun'}`,
         category: "thoughts",
         content: `${this.value}`,
       }

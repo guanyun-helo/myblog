@@ -32,6 +32,10 @@
       height: 24px;
       line-height: 24px;
       display: contents;
+      white-space:nowrap;
+      a{
+          white-space:nowrap;
+      }
     }
     .menus {
       display: none;
@@ -71,6 +75,9 @@
       height: 24px;
       line-height: 24px;
       display: contents;
+      a{
+          white-space:nowrap;
+      }
     }
     .menus {
       display: flex;

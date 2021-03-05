@@ -5,6 +5,8 @@ import "../styles/conponents/edit/index.scss"
 import Image from "../../content/assets/zendaya.jpg"
 import { useQuill } from "react-quilljs"
 import "quill/dist/quill.bubble.css" // Add css for snow theme
+import { Skeleton } from "@material-ui/lab"
+import { useSnackbar } from "notistack"
 
 function editArea(props) {
   const theme = "bubble"
@@ -46,6 +48,7 @@ function editArea(props) {
   ]
   const [thoughts, setThoughts] = useState({})
   const { quill, quillRef } = useQuill({ theme, modules, formats, placeholder })
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar()
 
   const onTextChange = e => {
     setThoughts(e.target.value)
@@ -68,7 +71,18 @@ function editArea(props) {
         <div
           className="send"
           onClick={() => {
-            props.sendThoughts(thoughts)
+            if(props.loading) {
+                enqueueSnackbar("publishing", {
+                    variant: "info",
+                    anchorOrigin: {
+                        vertical: "top",
+                        horizontal: "right",
+                    },
+                    autoHideDuration: 1000
+                })
+                return
+            }
+            props.sendThoughts(thoughts,quill.getText())
           }}
         >
           SEND
@@ -78,7 +92,7 @@ function editArea(props) {
         <div className="icon">
           <img src={Image} />
         </div>
-        <div className="input-container">
+       <div className="input-container">
           <div style={{ width: "100%", height: 300 }}>
             <div ref={quillRef} />
           </div>

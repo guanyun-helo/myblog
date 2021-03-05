@@ -1,0 +1,208 @@
+@media (max-width: 768px) {
+  .single-thought {
+    width: 100%;
+    height: 100%;
+    // padding-top: 5vw;
+    position: fixed;
+    top: 0;
+    z-index: 2;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    .ql-editor{
+        font-size: 25px;
+    }
+    .return-bar {
+      width: 100%;
+      height: 30px;
+      border-bottom: 1px solid #00000030;
+      padding: 5vw;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      .return {
+        height: 100%;
+        display: flex;
+        align-items: center;
+      }
+      .send {
+        height: 100%;
+        display: flex;
+        align-items: center;
+      }
+    }
+    .content-bar {
+      padding: 5vw;
+      display: flex;
+      flex-direction: column;
+      .input-container {
+        width: 100%;
+        textarea {
+          margin-left: 20px;
+          height: 500px;
+          // width: 100%;
+        }
+      }
+      .icon {
+        width: 50px;
+        height: 50px;
+        margin-bottom: 10px;
+        img {
+          width: 100%;
+          border-radius: 50%;
+        }
+      }
+    }
+          .post {
+        padding: 5vw;
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: row;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 20px;
+        .post-content {
+          flex: 6;
+          .post-title {
+            color: rgb(0, 0, 0);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+          }
+          .post-desc {
+            font-size: 1rem;
+            line-height: 1.5rem;
+            font-weight: 400;
+            letter-spacing: 0.1ch;
+            p {
+              margin-bottom: 0px;
+            }
+          }
+          .post-time {
+            font-size: 0.75rem;
+            color: rgb(85, 85, 85);
+            letter-spacing: 0.5px;
+          }
+        }
+        .post-img {
+          max-width: 240px;
+          margin-left: 10px;
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+          img {
+            border-radius: 4px;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+          }
+        }
+      }
+  }
+}
+@media (min-width: 768px) {
+      .single-thought {
+    width: 100%;
+    height: 100%;
+    // padding-top: 5vw;
+    position: fixed;
+    top: 0;
+    z-index: 2;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    .ql-editor{
+        font-size: 25px;
+    }
+    .return-bar {
+      width: 100%;
+      height: 20px;
+      border-bottom: 1px solid #00000030;
+      padding: 5vw;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      .return {
+        height: 100%;
+        display: flex;
+        align-items: center;
+      }
+      .send {
+        height: 100%;
+        display: flex;
+        align-items: center;
+      }
+    }
+    .content-bar {
+      padding: 5vw;
+      display: flex;
+      flex-direction: column;
+      .input-container {
+        width: 100%;
+        textarea {
+          margin-left: 20px;
+          height: 500px;
+          // width: 100%;
+        }
+      }
+      .icon {
+        width: 50px;
+        height: 50px;
+        margin-bottom: 10px;
+        img {
+          width: 100%;
+          border-radius: 50%;
+        }
+      }
+    }
+          .post {
+              padding: 5vw;
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: row;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 20px;
+        .post-content {
+          flex: 6;
+          .post-title {
+            color: rgb(0, 0, 0);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+          }
+          .post-desc {
+            font-size: 1rem;
+            line-height: 1.5rem;
+            font-weight: 400;
+            letter-spacing: 0.1ch;
+            p {
+              margin-bottom: 0px;
+            }
+          }
+          .post-time {
+            font-size: 0.75rem;
+            color: rgb(85, 85, 85);
+            letter-spacing: 0.5px;
+          }
+        }
+        .post-img {
+          max-width: 240px;
+          margin-left: 10px;
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+          img {
+            border-radius: 4px;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+          }
+        }
+      }
+  }
+}
