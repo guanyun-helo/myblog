@@ -77,13 +77,13 @@ class Git {
     })
   }
 
-  createContent(value,text) {
+  createContent(value, text) {
     return new Promise((resolve, reject) => {
       const nid = nanoid()
       const content = {
         path: `${nid}.md`,
         date: `${new Date().toISOString()}`,
-        title: `${text || 'guanyun'}`,
+        title: `${text || "guanyun"}`,
         category: "thoughts",
         content: `${this.value}`,
       }
@@ -99,7 +99,7 @@ class Git {
           }
         )
         .then(res => {
-          resolve(res)
+          resolve(content)
         })
         .catch(err => {
           reject(err)
