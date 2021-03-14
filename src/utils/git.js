@@ -95,7 +95,7 @@ class Git {
           {
             message: `create ${nanoid()}.json`,
             content: base64.encode(JSON.stringify(content, 4)),
-            path: `${nanoid()}.json`,
+            path: `${nid}.json`,
           }
         )
         .then(res => {
