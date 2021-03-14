@@ -124,6 +124,7 @@ function Thoughts(props) {
         })
         Promise.all(raws.map(u => axios.get(u))).then(responses => {
           responses.forEach(post => {
+            console.log(post)
             const node = {
               path: post.data.path,
               date: post.data.date,

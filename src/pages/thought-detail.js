@@ -12,7 +12,7 @@ function singleThought(props) {
 
   const getPost = path => {
     return axios.get(
-      `https://raw.githubusercontent.com/guanyun-helo/myblog/master/content/thoughts/${path}.json`,
+      `https://raw.githubusercontent.com/guanyun-helo/myblog/master/content/thoughts/${path}`,
       {}
     )
   }
@@ -20,23 +20,39 @@ function singleThought(props) {
     console.log("location.hash", location.hash)
     const hash = location.hash.replace("#", "").replace(".md", "")
     getPost(hash).then(res => {
-      console.log(res)
+      const node = {
+        path: res.data.path,
+        date: res.data.date,
+        title: res.data.title,
+        category: res.data.category,
+        content: res.data.content.replace("\n", "\\n"),
+      }
+      try {
+        const contvert = new QuillDeltaToHtmlConverter(
+          JSON.parse(node.content).ops
+        )
+        node.content = contvert.convert()
+        if (window) {
+          document.title = node.title + "| guanyun"
+          // location.hash = post?.path
+        }
+      } catch (error) {}
+      setPost(node)
     })
     const likeButton = new LikeCoinButton({
       likerId: "guanyun",
       ref: document.querySelector("#like-button"),
     })
     likeButton.mount()
-    if (window) {
-      document.title = props.location?.state?.post?.title + "| guanyun"
-      // location.hash = post?.path
-    }
   }, [props])
   return (
     <div className="single-thought animate__animated animate__fadeInRight animate__faster">
       <div className="return-bar">
         <div className="return">
-          <KeyboardBackspaceTwoToneIcon />
+          <Link to="/thoughts">
+            {" "}
+            <KeyboardBackspaceTwoToneIcon />
+          </Link>
         </div>
         <div className="send">guanyun's microblog</div>
       </div>
