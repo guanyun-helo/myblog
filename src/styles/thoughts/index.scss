@@ -97,8 +97,7 @@
         }
       }
     }
-    .single-thought-container{
-        
+    .single-thought-container {
     }
   }
 }
@@ -106,8 +105,8 @@
   .thoughts-container {
     width: 100%;
     padding: 0 25vw 0 25vw;
-        .thoughts-list {
-        padding-top: 30px;
+    .thoughts-list {
+      padding-top: 30px;
       max-height: 3000px;
       overflow-y: scroll;
       .post {
@@ -202,4 +201,8 @@
       }
     }
   }
+}
+blockquote {
+  padding-bottom: 0 !important;
+  margin-bottom: 10pt !important;
 }

@@ -81,7 +81,7 @@ class Git {
     return new Promise((resolve, reject) => {
       const nid = nanoid()
       const content = {
-        path: `${nid}.md`,
+        path: `${nid}`,
         date: `${new Date().toISOString()}`,
         title: `${text || "guanyun"}`,
         category: "thoughts",

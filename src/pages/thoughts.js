@@ -206,34 +206,39 @@ function Thoughts(props) {
         <div className="thoughts-list">
           {nodes.map((node, ndx) => {
             const post = node
+            // console.log(post)
             return (
-              <div
+              <Link
                 key={ndx}
-                to={"/thoughts"}
-                onClick={() => {
-                  getSingleThought(post)
-                }}
+                to={`/thought-detail/`}
+                state={{ post: post, close: closeSingleThought }}
               >
-                {loading ? (
-                  <Skeleton animation="wave"></Skeleton>
-                ) : (
-                  <div key={ndx} className="post">
-                    <div className="post-content">
-                      {/* <div className="post-title">{post.frontmatter.title}</div> */}
-                      <div className="post-desc">
-                        <div
-                          dangerouslySetInnerHTML={{
-                            __html: post.content || "",
-                          }}
-                        ></div>
-                      </div>
-                      <div className="post-time">
-                        {new Date(post.date).toLocaleString()}
+                <div
+                  onClick={() => {
+                    // getSingleThought(post)
+                  }}
+                >
+                  {loading ? (
+                    <Skeleton animation="wave"></Skeleton>
+                  ) : (
+                    <div key={ndx} className="post">
+                      <div className="post-content">
+                        {/* <div className="post-title">{post.frontmatter.title}</div> */}
+                        <div className="post-desc">
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: post.content || "",
+                            }}
+                          ></div>
+                        </div>
+                        <div className="post-time">
+                          {new Date(post.date).toLocaleString()}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                )}
-              </div>
+                  )}
+                </div>
+              </Link>
             )
           })}
         </div>
@@ -280,7 +285,6 @@ function Thoughts(props) {
           ) : null}
         </div>
       </div>
-      <Link to="/">{/* <Button marginTop="85px">Go Home</Button> */}</Link>
     </Layout>
   )
 }
