@@ -13,7 +13,7 @@ fs.readdir(testFolder, (err, files) => {
       data = JSON.parse(data)
       data.path = file
       console.log(JSON.stringify(data, 4))
-      fs.writeFile(file, JSON.stringify(data, 4), "utf-8", function(err) {
+      fs.writeFileSync(file, JSON.stringify(data, 4), function(err) {
         if (err) {
           console.log(err)
         }
