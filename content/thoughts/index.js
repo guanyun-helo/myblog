@@ -10,12 +10,12 @@ fs.readdir(testFolder, (err, files) => {
       }
       //   data = data.replace("\n", "\\n")
       //   data = base64.decode(data)
-      console.log(JSON.parse(data).path)
       data = JSON.parse(data)
       data.path = file
-      fs.writeFile(file, JSON.stringify(data), function(err) {
+      console.log(JSON.stringify(data, 4))
+      fs.writeFile(file, JSON.stringify(data, 4), "utf-8", function(err) {
         if (err) {
-          return console.log(err)
+          console.log(err)
         }
         console.log("The file was saved!")
       })
