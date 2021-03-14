@@ -5,14 +5,23 @@ import { QuillDeltaToHtmlConverter } from "quill-delta-to-html"
 import KeyboardBackspaceTwoToneIcon from "@material-ui/icons/KeyboardBackspaceTwoTone"
 import "../styles/conponents/singleThought/index.scss"
 import LikeCoinButton from "../utils/like.button.sdk"
-
+import axios from "axios"
 function singleThought(props) {
-  console.log("props", props)
   const [post, setPost] = useState({})
   // const [close, setClose] = useState(() => {})
+
+  const getPost = path => {
+    return axios.get(
+      `https://raw.githubusercontent.com/guanyun-helo/myblog/master/content/thoughts/${path}.json`,
+      {}
+    )
+  }
   useEffect(() => {
-    if (!props.location?.state) return
-    setPost(props.location?.state?.post)
+    console.log("location.hash", location.hash)
+    const hash = location.hash.replace("#", "").replace(".md", "")
+    getPost(hash).then(res => {
+      console.log(res)
+    })
     const likeButton = new LikeCoinButton({
       likerId: "guanyun",
       ref: document.querySelector("#like-button"),

@@ -114,7 +114,7 @@ function Thoughts(props) {
 
   const getPosts = date => {
     git
-      .getPost()
+      .getPosts()
       .then(response => {
         if (!response.data || response.data.length === 0) return
         let postNodes = []
@@ -210,7 +210,7 @@ function Thoughts(props) {
             return (
               <Link
                 key={ndx}
-                to={`/thought-detail/`}
+                to={`/thought-detail/#${post.path}`}
                 state={{ post: post, close: closeSingleThought }}
               >
                 <div

@@ -107,9 +107,15 @@ class Git {
     })
   }
 
-  getPost() {
+  getPosts() {
     return axios.get(
       `https://api.github.com/repos/guanyun-helo/myblog/contents/content/thoughts/`,
+      {}
+    )
+  }
+  getPost(path) {
+    return axios.get(
+      `https://api.github.com/repos/guanyun-helo/myblog/contents/content/thoughts/${path}.json`,
       {}
     )
   }
