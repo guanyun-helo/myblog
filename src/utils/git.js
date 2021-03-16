@@ -81,7 +81,7 @@ class Git {
     return new Promise((resolve, reject) => {
       const nid = nanoid()
       const content = {
-        path: `${nid}`,
+        path: `${nid}.json`,
         date: `${new Date().toISOString()}`,
         title: `${text || "guanyun"}`,
         category: "thoughts",
@@ -90,10 +90,10 @@ class Git {
 
       this.axios
         .put(
-          `/repos/guanyun-helo/myblog/contents/content/thoughts/${nanoid()}.json`,
+          `/repos/guanyun-helo/myblog/contents/content/thoughts/${nid}.json`,
 
           {
-            message: `create ${nanoid()}.json`,
+            message: `create ${nid}.json`,
             content: base64.encode(JSON.stringify(content, 4)),
             path: `${nid}.json`,
           }
