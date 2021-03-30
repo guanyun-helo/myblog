@@ -6,6 +6,47 @@ import SEO from "../components/seo"
 import Button from "../components/button"
 import Bio from "../components/bio"
 
+const ua = navigator.userAgent.split("(")[1].split(")")[0]
+let brand = ""
+const phone = [
+  /IPHONE/gi,
+  /huawei/gi,
+  /mi/gi,
+  /vivo/gi,
+  /OPPO/gi,
+  /samsung/gi,
+  /SONY/gi,
+  /Nokia/gi,
+  /HTC/gi,
+  /ZTE/gi,
+  /Lenovo/gi,
+  /ZUK/gi,
+]
+if (phone[0].test(ua)) {
+  brand = "iPhone"
+} else if (phone[1].test(ua)) {
+  brand = "HUAWEI"
+} else if (phone[2].test(ua)) {
+  brand = "小米"
+} else if (phone[3].test(ua)) {
+  brand = "vivo"
+} else if (phone[4].test(ua)) {
+  brand = "OPPO"
+} else if (phone[5].test(ua)) {
+  brand = "SAMSUNG"
+} else if (phone[6].test(ua)) {
+  brand = "SONY"
+} else if (phone[7].test(ua)) {
+  brand = "Nokia"
+} else if (phone[8].test(ua)) {
+  brand = "HTC"
+} else if (phone[9].test(ua)) {
+  brand = "ZTE"
+} else if (phone[10].test(ua) || phone[11].test(ua)) {
+  brand = "Lenovo"
+} else {
+  brand = "Android"
+}
 class IndexPage extends React.Component {
   constructor() {
     super()
@@ -21,6 +62,10 @@ class IndexPage extends React.Component {
   render() {
     const siteTitle = "This is my blog"
     const { nodes } = this.state
+    if (brand === "HUAWEI") {
+      alert("Not support your devices!")
+      return
+    }
     if (!nodes) return
     return (
       <Layout location={this.props.location} title={siteTitle}>
