@@ -6,7 +6,10 @@ import SEO from "../components/seo"
 import Button from "../components/button"
 import Bio from "../components/bio"
 
-const ua = navigator.userAgent.split("(")[1].split(")")[0]
+const ua = ""
+if (navigator) {
+  ua = navigator.userAgent.split("(")[1].split(")")[0]
+}
 let brand = ""
 const phone = [
   /IPHONE/gi,
