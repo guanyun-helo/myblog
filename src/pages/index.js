@@ -7,7 +7,7 @@ import Button from "../components/button"
 import Bio from "../components/bio"
 
 const ua = ""
-if (navigator) {
+if (window) {
   ua = navigator.userAgent.split("(")[1].split(")")[0]
 }
 let brand = ""
