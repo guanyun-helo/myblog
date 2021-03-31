@@ -68,10 +68,7 @@ class IndexPage extends React.Component {
   render() {
     const siteTitle = "This is my blog"
     const { nodes } = this.state
-    if (this.isNotSupported() === "HUAWEI") {
-      alert("Not support your devices!")
-      return
-    }
+    
     if (!nodes) return
     return (
       <Layout location={this.props.location} title={siteTitle}>
